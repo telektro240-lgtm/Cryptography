@@ -3,112 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Translator Code - GitHub Host</title>
+    <title>Pancasila Cipher Tool - Modern UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Variabel CSS untuk kemudahan kustomisasi */
         :root {
-            --primary: #2c3e50;
-            --success: #27ae60;
-            --info: #2980b9;
-            --light: #ecf0f1;
+            --primary-color: #4CAF50; /* Hijau yang lebih kuat */
+            --secondary-color: #2196F3; /* Biru cerah */
+            --background-gradient-start: #e0f2f7; /* Biru muda */
+            --background-gradient-end: #f0f4f8; /* Abu-abu terang */
+            --text-color: #333;
+            --light-gray: #f9f9f9;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.12);
         }
 
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            color: var(--text-color);
+            line-height: 1.6;
         }
 
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        .container {
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px var(--shadow-medium);
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease-in-out;
         }
 
-        h2 { text-align: center; color: var(--primary); margin-top: 0; }
+        .container:hover {
+            transform: translateY(-5px);
+        }
 
-        .input-group { margin-bottom: 1.5rem; }
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
 
-        label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
 
-        textarea, input {
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+
+        textarea, input[type="number"] {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
             box-sizing: border-box;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: var(--light-gray);
         }
 
-        textarea:focus, input:focus {
+        textarea:focus, input[type="number"]:focus {
             outline: none;
-            border-color: var(--info);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2); /* Shadow saat fokus */
         }
 
         .btn-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 15px;
+            margin-top: 2rem;
         }
 
         button {
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             color: white;
-            transition: transform 0.1s, opacity 0.2s;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        button:active { transform: scale(0.98); }
+        button:active {
+            transform: translateY(1px);
+        }
 
-        .btn-encrypt { background-color: var(--success); }
-        .btn-decrypt { background-color: var(--info); }
+        .btn-encrypt {
+            background-color: var(--primary-color);
+        }
+        .btn-encrypt:hover {
+            background-color: #43a047; /* Sedikit lebih gelap */
+        }
+
+        .btn-decrypt {
+            background-color: var(--secondary-color);
+        }
+        .btn-decrypt:hover {
+            background-color: #1976D2; /* Sedikit lebih gelap */
+        }
 
         .result-area {
-            margin-top: 2rem;
-            padding: 1rem;
-            background: var(--light);
-            border-radius: 8px;
+            margin-top: 2.5rem;
+            padding: 1.2rem;
+            background: var(--light-gray);
+            border-radius: 10px;
+            border: 1px dashed var(--border-color);
             position: relative;
         }
 
         #output {
             word-wrap: break-word;
             margin: 0;
-            font-family: monospace;
-            color: #333;
+            font-family: 'Roboto Mono', monospace; /* Font monospace untuk hasil */
+            color: #555;
+            font-size: 1rem;
         }
 
         .copy-btn {
-            margin-top: 10px;
-            background: #95a5a6;
-            font-size: 0.8rem;
+            margin-top: 15px;
+            background-color: #607d8b; /* Biru keabu-abuan */
             width: 100%;
         }
+        .copy-btn:hover {
+            background-color: #546E7A;
+        }
+
+        /* Responsif untuk layar kecil */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            .btn-container {
+                grid-template-columns: 1fr; /* Tombol jadi satu kolom di mobile */
+            }
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="card">
-    <h2>🔐 Translate Code</h2>
+<div class="container">
+    <h2>🔐 Pancasila Cipher Tool</h2>
     
     <div class="input-group">
-        <label>Input Teks:</label>
-        <textarea id="message" rows="4" placeholder="Ketik pesan rahasia..."></textarea>
+        <label for="message">Input Teks:</label>
+        <textarea id="message" rows="5" placeholder="Ketik pesan yang ingin dienkripsi/dekripsi di sini..."></textarea>
     </div>
 
     <div class="input-group">
-        <label>Kunci (Angka):</label>
-        <input type="number" id="shift" value="5">
+        <label for="shift">Kunci Pergeseran (Angka):</label>
+        <input type="number" id="shift" value="5" min="1" max="25">
     </div>
 
     <div class="btn-container">
@@ -117,8 +186,8 @@
     </div>
 
     <div class="result-area">
-        <label style="color: #7f8c8d;">Hasil:</label>
-        <p id="output">Belum ada hasil.</p>
+        <label style="color: #757575; font-weight: 400;">Hasil Kriptografi:</label>
+        <p id="output">Hasil akan muncul di sini.</p>
         <button class="copy-btn" onclick="copyResult()">Salin Hasil</button>
     </div>
 </div>
@@ -126,33 +195,54 @@
 <script>
     function caesarCipher(text, shift) {
         return text.split('').map(char => {
-            if (char.match(/[a-z]/i)) {
-                let code = char.charCodeAt();
-                let base = (code >= 65 && code <= 90) ? 65 : 97;
+            if (char.match(/[a-zA-Z]/)) { // Match both upper and lower case letters
+                let code = char.charCodeAt(0);
+                let base = (code >= 65 && code <= 90) ? 65 : 97; // 65 for 'A', 97 for 'a'
+                
+                // Ensure shift wraps correctly for negative numbers (decryption)
+                // (x - base + shift) % 26 ensures it stays within 0-25
+                // (+ 26) % 26 handles negative results of modulo in some JS engines
                 return String.fromCharCode(((code - base + shift) % 26 + 26) % 26 + base);
             }
-            return char;
+            return char; // Return non-alphabetic characters as is
         }).join('');
     }
 
     function process(isEncrypt) {
-        const msg = document.getElementById('message').value;
-        const shiftInput = document.getElementById('shift').value;
-        const shift = parseInt(shiftInput);
+        const messageInput = document.getElementById('message');
+        const shiftInput = document.getElementById('shift');
+        const outputElement = document.getElementById('output');
+
+        const msg = messageInput.value;
+        let shift = parseInt(shiftInput.value);
         
-        if (msg === "") return alert("Isi teks dulu!");
-        if (isNaN(shift)) return alert("Kunci harus angka!");
+        if (msg.trim() === "") {
+            outputElement.innerText = "Masukkan teks yang ingin diproses.";
+            return;
+        }
+        if (isNaN(shift)) {
+            outputElement.innerText = "Kunci harus berupa angka.";
+            return;
+        }
 
         const finalShift = isEncrypt ? shift : -shift;
-        document.getElementById('output').innerText = caesarCipher(msg, finalShift);
+        outputElement.innerText = caesarCipher(msg, finalShift);
     }
 
     function copyResult() {
-        const text = document.getElementById('output').innerText;
-        if (text === "Belum ada hasil.") return;
+        const outputElement = document.getElementById('output');
+        const textToCopy = outputElement.innerText;
         
-        navigator.clipboard.writeText(text).then(() => {
-            alert("Berhasil disalin ke clipboard!");
+        if (textToCopy === "Hasil akan muncul di sini." || textToCopy === "" || textToCopy.startsWith("Masukkan teks") || textToCopy.startsWith("Kunci harus")) {
+            alert("Tidak ada hasil untuk disalin.");
+            return;
+        }
+        
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            alert("Hasil berhasil disalin ke clipboard!");
+        }).catch(err => {
+            console.error('Gagal menyalin teks: ', err);
+            alert('Gagal menyalin teks. Silakan salin secara manual.');
         });
     }
 </script>
