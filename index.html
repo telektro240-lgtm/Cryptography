@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pancasila Cipher Tool - GitHub Host</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --success: #27ae60;
+            --info: #2980b9;
+            --light: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 { text-align: center; color: var(--primary); margin-top: 0; }
+
+        .input-group { margin-bottom: 1.5rem; }
+
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+
+        textarea, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus, input:focus {
+            outline: none;
+            border-color: var(--info);
+        }
+
+        .btn-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        .btn-encrypt { background-color: var(--success); }
+        .btn-decrypt { background-color: var(--info); }
+
+        .result-area {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        #output {
+            word-wrap: break-word;
+            margin: 0;
+            font-family: monospace;
+            color: #333;
+        }
+
+        .copy-btn {
+            margin-top: 10px;
+            background: #95a5a6;
+            font-size: 0.8rem;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>🔐 CipherText Tool</h2>
+    
+    <div class="input-group">
+        <label>Input Teks:</label>
+        <textarea id="message" rows="4" placeholder="Ketik pesan rahasia..."></textarea>
+    </div>
+
+    <div class="input-group">
+        <label>Kunci (Angka):</label>
+        <input type="number" id="shift" value="5">
+    </div>
+
+    <div class="btn-container">
+        <button class="btn-encrypt" onclick="process(true)">ENKRIPSI</button>
+        <button class="btn-decrypt" onclick="process(false)">DEKRIPSI</button>
+    </div>
+
+    <div class="result-area">
+        <label style="color: #7f8c8d;">Hasil:</label>
+        <p id="output">Belum ada hasil.</p>
+        <button class="copy-btn" onclick="copyResult()">Salin Hasil</button>
+    </div>
+</div>
+
+<script>
+    function caesarCipher(text, shift) {
+        return text.split('').map(char => {
+            if (char.match(/[a-z]/i)) {
+                let code = char.charCodeAt();
+                let base = (code >= 65 && code <= 90) ? 65 : 97;
+                return String.fromCharCode(((code - base + shift) % 26 + 26) % 26 + base);
+            }
+            return char;
+        }).join('');
+    }
+
+    function process(isEncrypt) {
+        const msg = document.getElementById('message').value;
+        const shiftInput = document.getElementById('shift').value;
+        const shift = parseInt(shiftInput);
+        
+        if (msg === "") return alert("Isi teks dulu!");
+        if (isNaN(shift)) return alert("Kunci harus angka!");
+
+        const finalShift = isEncrypt ? shift : -shift;
+        document.getElementById('output').innerText = caesarCipher(msg, finalShift);
+    }
+
+    function copyResult() {
+        const text = document.getElementById('output').innerText;
+        if (text === "Belum ada hasil.") return;
+        
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Berhasil disalin ke clipboard!");
+        });
+    }
+</script>
+
+</body>
+</html>
